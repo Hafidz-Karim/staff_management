@@ -11,10 +11,10 @@
             {{-- Kartu Sambutan --}}
             <div class="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl shadow-lg p-6 text-white">
                 <div class="flex items-center space-x-4">
-                    <div class="text-5xl">👋</div>
                     <div>
-                        <h1 class="text-2xl font-bold">Selamat datang, {{ Auth::user()->name }}!</h1>
-                        <p class="text-sm opacity-90">Selamat datang kembali. Pilih fitur di bawah sesuai kebutuhanmu 👇</p>
+                        <h1 class="text-2xl font-bold">Selamat datang, {{ Auth::user()->name }}</h1>
+                        <p class="text-sm opacity-90">Selamat datang kembali. Pilih fitur di bawah sesuai kebutuhanmu <i
+                                class="ri-emotion-happy-line"></i></p>
                     </div>
                 </div>
             </div>
@@ -23,48 +23,67 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {{-- Fitur Admin --}}
                 <a href="{{ route('admin.jadwal_kerja.index') }}"
-                   class="group bg-white border border-gray-200 rounded-2xl shadow hover:shadow-xl p-6 transition transform hover:-translate-y-1">
-                    <div class="flex items-center space-x-4">
-                        <div class="bg-gray-100 p-3 rounded-full group-hover:bg-gray-200 transition">
-                           <div class="text-4xl mb-3 text-blue-600 text-center">⚙️</div>
+                    class="group block bg-white border border-gray-200 rounded-2xl shadow hover:shadow-xl p-6 transition transform hover:-translate-y-1 hover:bg-blue-500 hover:border-blue-600">
 
+                    <div class="flex items-center space-x-4">
+                        <div class="p-4 bg-blue-100 rounded-full transition duration-300 group-hover:bg-blue-500">
+                            <div class="text-4xl text-blue-600 text-center group-hover:text-white">
+                                <i class="ri-user-settings-line"></i>
+                            </div>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-gray-800">Fitur Admin</h3>
-                            <p class="text-sm text-gray-500">Kelola data pengguna, jadwal, dan sistem utama.</p>
+                            <h3 class="text-lg font-semibold text-gray-800 transition group-hover:text-white">Fitur
+                                Admin</h3>
+                            <p class="text-sm text-gray-500 transition group-hover:text-blue-100">
+                                Kelola data pengguna, jadwal, dan sistem utama.
+                            </p>
                         </div>
                     </div>
                 </a>
+
 
                 {{-- Fitur Guru --}}
                 <a href="{{ route('guru.dashboard.index') }}"
-                   class="group bg-green-100 border border-green-200 rounded-2xl shadow hover:shadow-xl p-6 transition transform hover:-translate-y-1">
-                    <div class="flex items-center space-x-4">
-                        <div class="bg-green-200 p-3 rounded-full group-hover:bg-green-300 transition">
-                            <div class="text-4xl mb-3 text-blue-600 text-center">⚙️</div>
+                    class="group block bg-white border border-blue-200 rounded-2xl shadow hover:shadow-xl p-6 transition transform hover:-translate-y-1 hover:bg-blue-500 hover:border-blue-600">
 
+                    <div class="flex items-center space-x-4">
+                        <div class="p-4 bg-blue-100 rounded-full transition duration-300 group-hover:bg-blue-500">
+                            <div class="text-4xl text-blue-600 text-center group-hover:text-white">
+                                <i class="ri-user-3-line"></i>
+                            </div>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-green-800">Fitur Guru</h3>
-                            <p class="text-sm text-green-600">Akses jadwal mengajar, laporan, dan absensi siswa.</p>
+                            <h3 class="text-lg font-semibold text-gray-800 transition group-hover:text-white">Fitur Guru
+                            </h3>
+                            <p class="text-sm text-gray-500 transition group-hover:text-blue-100">
+                                Akses jadwal mengajar, laporan, dan absensi siswa.
+                            </p>
                         </div>
                     </div>
                 </a>
+
+
 
                 {{-- Fitur Pegawai --}}
                 <a href="{{ route('pegawai.jadwal.index') }}"
-                   class="group bg-purple-100 border border-purple-200 rounded-2xl shadow hover:shadow-xl p-6 transition transform hover:-translate-y-1">
-                    <div class="flex items-center space-x-4">
-                        <div class="bg-purple-200 p-3 rounded-full group-hover:bg-purple-300 transition">
-                            <div class="text-4xl mb-3 text-blue-600 text-center">⚙️</div>
+                    class="group block bg-white border border-blue-200 rounded-2xl shadow hover:shadow-xl p-6 transition transform hover:-translate-y-1 hover:bg-blue-500 hover:border-blue-600">
 
+                    <div class="flex items-center space-x-4">
+                        <div class="p-4 bg-blue-100 rounded-full transition duration-300 group-hover:bg-blue-500">
+                            <div class="text-4xl text-blue-600 text-center group-hover:text-white">
+                                <i class="ri-group-line"></i>
+                            </div>
                         </div>
                         <div>
-                            <h3 class="text-lg font-semibold text-purple-800">Fitur Pegawai</h3>
-                            <p class="text-sm text-purple-600">Lihat jadwal kerja, absensi, dan laporan harian.</p>
+                            <h3 class="text-lg font-semibold text-gray-800 transition group-hover:text-white">Fitur
+                                Pegawai</h3>
+                            <p class="text-sm text-gray-500 transition group-hover:text-blue-100">
+                                Lihat jadwal kerja, absensi, dan laporan harian.
+                            </p>
                         </div>
                     </div>
                 </a>
+
             </div>
 
             {{-- Tambahan Statistik (Opsional) --}}
