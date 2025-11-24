@@ -4,30 +4,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - @yield('title', 'Dashboard')</title>
+    <title>@yield('title') | Admin Dashboard</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+        };
+    </script>
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <script>
+        // Auto load theme
+        if (localStorage.getItem("theme") === "dark") {
+            document.documentElement.classList.add("dark");
+        }
+
+        // Toggle theme
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.classList.toggle("dark");
+            localStorage.setItem("theme", html.classList.contains("dark") ? "dark" : "light");
+        }
+    </script>
+
 </head>
 
-<body class="bg-gray-100 font-sans">
-    <!-- Navbar -->
-    <nav class="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
-        <div class="text-lg font-bold">Sistem Manajemen Staf - Admin</div>
-        <div>
-            <a href="{{ route('dashboard') }}" class="px-3"> <i class="ri-home-4-line"></i>Home</a>
-            <form method="POST" action="{{ route('logout') }}" class="inline">
-                @csrf
-                <button type="submit" class="px-3 hover:underline"><i class="ri-logout-box-line"></i> Logout</button>
-            </form>
-            <a href="{{ route('admin.absensi.index') }}" class="block py-2 px-4 ">
-                <i class="ri-sticky-note-line"></i> Data Absensi
-            </a>
-        </div>
-    </nav>
+<body class="bg-gray-100 dark:bg-[#0d1525] text-gray-800 dark:text-gray-200 transition">
 
-    <div class="max-w-7xl mx-auto p-6">
-        @yield('content')
+    <!-- SIDEBAR FULL HEIGHT -->
+    <aside
+        class="fixed top-0 left-0 w-64 h-full bg-white dark:bg-[#0f172a]
+               border-r border-gray-200 dark:border-gray-700 p-6 flex flex-col shadow-sm">
+
+        <!-- LOGO ADMIN -->
+        <div class="flex items-center gap-3 mb-10 mt-2">
+            <div class="w-10 h-10 bg-purple-600 dark:bg-purple-500 rounded-xl flex items-center justify-center">
+                <i class="ri-admin-line text-xl text-white"></i>
+            </div>
+            <span class="text-xl font-bold text-gray-800 dark:text-gray-200">
+                Admin Panel
+            </span>
+        </div>
+
+        <!-- MENU -->
+        <nav class="flex-1 space-y-3">
+
+            <a href="{{ route('admin.dashboard.index') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl
+                       {{ request()->routeIs('admin.dashboard') ? 'bg-gray-200 dark:bg-gray-800' : '' }}
+                       text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
+                <i class="ri-home-4-line text-xl"></i>
+                Dashboard
+            </a>
+
+            <a href="{{ route('admin.jadwal_kerja.index') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl
+                       {{ request()->routeIs('admin.jadwal.index') ? 'bg-gray-200 dark:bg-gray-800' : '' }}
+                       text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
+                <i class="ri-calendar-check-line text-xl"></i>
+                Jadwal Kerja
+            </a>
+
+            <!-- Absensi Pegawai -->
+            <a href="{{ route('admin.absensi.index') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl
+                   {{ request()->routeIs('admin.absensi.*') ? 'bg-blue-200 dark:bg-blue-800' : '' }}
+                   text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
+                <i class="ri-file-list-3-line text-xl"></i>
+                Data Absensi
+            </a>
+            <!-- Tombol kembali ke dashboard utama -->
+            <a href="{{ route('dashboard') }}"
+                 class="flex items-center gap-3 px-4 py-3 rounded-xl
+                   {{ request()->routeIs('admin.absensi.*') ? 'bg-blue-200 dark:bg-blue-800' : '' }}
+                   text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
+                <i class="ri-arrow-go-back-fill"></i> Ke halaman utama
+            </a>
+        </nav>
+
+        <!-- LOGOUT -->
+        <form method="POST" action="{{ route('logout') }}" class="pt-8">
+            @csrf
+            <button
+                class="w-full bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700
+                       text-white px-4 py-3 rounded-xl flex items-center justify-center gap-2 text-lg transition">
+                <i class="ri-logout-circle-r-line text-xl"></i>
+                Logout
+            </button>
+        </form>
+
+    </aside>
+
+    <!-- CONTENT AREA -->
+    <div class="ml-64 min-h-screen flex flex-col">
+
+        <!-- NAVBAR -->
+        <nav
+            class="bg-white dark:bg-[#0f172a] shadow-sm border-b border-gray-200 dark:border-gray-700
+                    px-6 py-4 flex justify-end items-center">
+
+            <div class="flex items-center gap-4">
+
+                <span class="font-medium text-gray-700 dark:text-gray-300">
+                    Halo, {{ auth()->user()->name }}
+                </span>
+
+                <button onclick="toggleTheme()"
+                    class="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                    <i class="ri-moon-line text-xl"></i>
+                </button>
+
+            </div>
+
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 p-8">
+            @yield('content')
+        </main>
+
     </div>
+
 </body>
 
 </html>

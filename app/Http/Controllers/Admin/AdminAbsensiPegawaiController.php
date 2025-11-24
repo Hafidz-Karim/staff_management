@@ -3,45 +3,68 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\AbsensiPegawai;
 use Illuminate\Http\Request;
-use PDF; // pastikan sudah di-import
+use App\Models\AbsensiPegawai;
+use PDF;
 
 class AdminAbsensiPegawaiController extends Controller
 {
-    // ✅ INDEX
+    /**
+     * FILTER UTAMA — Digunakan oleh INDEX, PREVIEW, dan PDF
+     */
+    private function applyFilters($query, Request $request)
+    {
+        // Filter berdasarkan nama pegawai
+        if ($request->filled('nama')) {
+            $query->whereHas('user', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->nama . '%');
+            });
+        }
+
+        // Filter berdasarkan tanggal lengkap (tahun otomatis saat ini)
+        if ($request->filled('tanggal') && $request->filled('bulan')) {
+            $fullDate = now()->year . '-' . $request->bulan . '-' . $request->tanggal;
+            $query->whereDate('tanggal', $fullDate);
+            return; // tanggal lebih spesifik, hentikan filter lain
+        }
+
+        // Filter hanya bulan
+        if ($request->filled('bulan')) {
+            $query->whereMonth('tanggal', $request->bulan)
+                  ->whereYear('tanggal', now()->year);
+        }
+    }
+
+
+    /**
+     * ==============================
+     * HALAMAN INDEX (TAMPILAN TABLE)
+     * ==============================
+     */
     public function index(Request $request)
     {
         $query = AbsensiPegawai::with('user')->orderBy('tanggal', 'desc');
 
-        if ($request->filled('nama')) {
-            $query->whereHas('user', fn($q) =>
-                $q->where('name', 'like', '%' . $request->nama . '%')
-            );
-        }
+        $this->applyFilters($query, $request);
 
-        if ($request->filled('tanggal')) {
-            $query->whereDate('tanggal', $request->tanggal);
-        }
+        $absensi = $query->paginate(10)->appends($request->except('page'));
 
-        $absensi = $query->paginate(10)->withQueryString();
-        return view('admin.absensi.index', compact('absensi'));
+        $filters = $request->only(['nama', 'tanggal', 'bulan']);
+
+        return view('admin.absensi.index', compact('absensi', 'filters'));
     }
 
-    // ✅ PREVIEW LAPORAN (tampilan di browser sebelum download)
+
+    /**
+     * ==============================
+     * HALAMAN PREVIEW (PRINT VIEW)
+     * ==============================
+     */
     public function preview(Request $request)
     {
         $query = AbsensiPegawai::with('user')->orderBy('tanggal', 'desc');
 
-        if ($request->filled('nama')) {
-            $query->whereHas('user', fn($q) =>
-                $q->where('name', 'like', '%' . $request->nama . '%')
-            );
-        }
-
-        if ($request->filled('tanggal')) {
-            $query->whereDate('tanggal', $request->tanggal);
-        }
+        $this->applyFilters($query, $request);
 
         $absensi = $query->get();
 
@@ -49,24 +72,20 @@ class AdminAbsensiPegawaiController extends Controller
             'count' => $absensi->count(),
         ];
 
-        // 🔹 tampilkan halaman preview
         return view('admin.absensi.preview', compact('absensi', 'summary'));
     }
 
-    // ✅ EXPORT PDF (untuk tombol Download)
+
+    /**
+     * ==============================
+     * EXPORT PDF
+     * ==============================
+     */
     public function exportPDF(Request $request)
     {
         $query = AbsensiPegawai::with('user')->orderBy('tanggal', 'desc');
 
-        if ($request->filled('nama')) {
-            $query->whereHas('user', fn($q) =>
-                $q->where('name', 'like', '%' . $request->nama . '%')
-            );
-        }
-
-        if ($request->filled('tanggal')) {
-            $query->whereDate('tanggal', $request->tanggal);
-        }
+        $this->applyFilters($query, $request);
 
         $absensi = $query->get();
 
@@ -74,13 +93,11 @@ class AdminAbsensiPegawaiController extends Controller
             'count' => $absensi->count(),
         ];
 
-        // 🔹 generate PDF dari view khusus
         $pdf = PDF::loadView('admin.absensi.export_pdf', [
             'absensi' => $absensi,
             'summary' => $summary
         ])->setPaper('A4', 'portrait');
 
-        // 🔹 download file PDF
         return $pdf->download('laporan_absensi_pegawai.pdf');
     }
 }

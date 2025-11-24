@@ -1,39 +1,44 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My App</title>
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Tailwind CSS CDN (opsional, bisa pakai lokal) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Navbar -->
+    <nav class="bg-white shadow p-4">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="{{ url('/') }}" class="font-bold text-xl">MyApp</a>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-        {{-- icon --}}
-        <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
-
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-            @include('layouts.navigation')
-
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
-
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+            <div class="space-x-4">
+                @auth
+                    <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-gray-900">Dashboard</a>
+                    <a href="{{ route('izin.index') }}" class="text-gray-700 hover:text-gray-900">Izin</a>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="text-gray-700 hover:text-gray-900">Logout</button>
+                    </form>
+                @else
+                    <a href="{{ route('login') }}" class="text-gray-700 hover:text-gray-900">Login</a>
+                @endauth
+            </div>
         </div>
-    </body>
+    </nav>
+
+    <!-- Content -->
+    <main class="py-10">
+        @yield('content')
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow p-4 text-center text-gray-500 text-sm">
+        &copy; {{ date('Y') }} MyApp. All rights reserved.
+    </footer>
+
+</body>
 </html>

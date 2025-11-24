@@ -1,58 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pegawai Dashboard</title>
 
-    <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+        };
+    </script>
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+    <script>
+        if (localStorage.getItem("theme") === "dark") {
+            document.documentElement.classList.add("dark");
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.classList.toggle("dark");
+            localStorage.setItem("theme", html.classList.contains("dark") ? "dark" : "light");
+        }
+    </script>
+
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 dark:bg-[#0d1525] text-gray-800 dark:text-gray-200 transition">
 
-    <!-- Navbar -->
-    <nav class="bg-blue-600 text-white shadow p-4 flex justify-between items-center">
-        <div class="text-lg font-bold">
-            📋 Pegawai Dashboard
+    <!-- SIDEBAR FULL HEIGHT -->
+    <aside
+        class="fixed top-0 left-0 w-64 h-full bg-white dark:bg-[#0f172a]
+               border-r border-gray-200 dark:border-gray-700 p-6 flex flex-col shadow-sm">
+
+        <!-- LOGO -->
+        <div class="flex items-center gap-3 mb-10 mt-2">
+            <div class="w-10 h-10 bg-blue-600 dark:bg-blue-500 rounded-xl flex items-center justify-center">
+                <i class="ri-dashboard-line text-xl text-white"></i>
+            </div>
+            <span class="text-xl font-bold text-gray-800 dark:text-gray-200">
+                Pegawai Dashboard
+            </span>
         </div>
-        <div>
-            <span class="mr-4">Halo, {{ auth()->user()->name }}</span>
-            <form method="POST" action="{{ route('logout') }}" class="inline">
-                @csrf
-                <button type="submit" class="bg-red-500 px-3 py-1 rounded hover:bg-red-600">Logout</button>
-            </form>
-        </div>
-    </nav>
 
-    <!-- Sidebar + Content -->
-    <div class="flex">
+        <!-- MENU -->
+        <nav class="flex-1 space-y-3">
+            <a href="{{ route('pegawai.dashboard') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl
+                   {{ request()->routeIs('admin.absensi.*') ? 'bg-blue-200 dark:bg-blue-800' : '' }}
+                   text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
+                <i class="ri-home-4-line text-xl"></i>
+                Dashboard
+            </a>
 
-        <!-- Sidebar -->
-        <aside class="w-64 bg-white shadow-lg min-h-screen p-4">
-            <ul>
-                <li class="mb-4">
-                    <a href="{{ route('pegawai.dashboard') }}" class="block p-2 rounded hover:bg-blue-100">🏠 Dashboard</a>
-                </li>
-                <li class="mb-4">
-                    <a href="{{ route('pegawai.jadwal.index') }}" class="block p-2 rounded hover:bg-blue-100">📅 Jadwal Kerja</a>
-                </li>
-                <li class="mb-4">
-                    <a href="{{ route('pegawai.profile') }}" class="block p-2 rounded hover:bg-blue-100">👤 Profil</a>
-                </li>
-            </ul>
-        </aside>
+            <a href="{{ route('pegawai.jadwal.index') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl
+                   {{ request()->routeIs('admin.absensi.*') ? 'bg-blue-200 dark:bg-blue-800' : '' }}
+                   text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
+                <i class="ri-calendar-check-line text-xl"></i>
+                Jadwal Kerja
+            </a>
 
-        <!-- Main Content -->
-        <main class="flex-1 p-6">
+            <a href="{{ route('pegawai.profile') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl
+                   {{ request()->routeIs('admin.absensi.*') ? 'bg-blue-200 dark:bg-blue-800' : '' }}
+                   text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
+                <i class="ri-user-3-line text-xl"></i>
+                Profil
+            </a>
+            <a href="{{ route('dashboard') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl
+                   {{ request()->routeIs('admin.absensi.*') ? 'bg-blue-200 dark:bg-blue-800' : '' }}
+                   text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
+                <i class="ri-arrow-go-back-fill"></i> Ke halaman utama
+            </a>
+        </nav>
+
+        <!-- LOGOUT -->
+        <form method="POST" action="{{ route('logout') }}" class="pt-10">
+            @csrf
+            <button
+                class="w-full bg-red-500 hover:bg-red-600 dark:bg-red-600 dark:hover:bg-red-700
+                       text-white px-4 py-3 rounded-xl flex items-center justify-center gap-2 text-lg transition">
+                <i class="ri-logout-circle-r-line text-xl"></i>
+                Logout
+            </button>
+        </form>
+
+    </aside>
+
+    <!-- CONTENT AREA (dipindah ke kanan dari sidebar) -->
+    <div class="ml-64 min-h-screen flex flex-col">
+
+        <!-- NAVBAR -->
+        <nav
+            class="bg-white dark:bg-[#0f172a] shadow-sm border-b border-gray-200 dark:border-gray-700
+                    px-6 py-4 flex justify-end items-center">
+
+            <div class="flex items-center gap-4">
+                <span class="font-medium text-gray-700 dark:text-gray-300">
+                    Halo, {{ auth()->user()->name }}
+                </span>
+
+                <button onclick="toggleTheme()"
+                    class="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition">
+                    <i class="ri-moon-line text-xl"></i>
+                </button>
+            </div>
+
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 p-8">
             @yield('content')
         </main>
+
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-white text-center p-4 mt-6 shadow-inner">
-        &copy; {{ date('Y') }} - Sistem Manajemen Staf
-    </footer>
-
 </body>
+
 </html>

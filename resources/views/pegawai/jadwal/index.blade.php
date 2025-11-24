@@ -1,7 +1,7 @@
 @extends('pegawai.layout')
 
 @section('content')
-<h1 class="text-2xl font-bold mb-4">📅 Jadwal Kerja Saya</h1>
+<h1 class="text-2xl font-bold mb-4">Jadwal Kerja Saya</h1>
 
 <table class="min-w-full table-auto bg-white shadow rounded-lg">
     <thead class="bg-blue-600 text-white">

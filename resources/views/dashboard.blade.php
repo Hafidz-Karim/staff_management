@@ -9,26 +9,24 @@
         <div class="max-w-6xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
             {{-- Kartu Sambutan --}}
-            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-2xl shadow-lg p-6 text-white">
-                <div class="flex items-center space-x-4">
-                    <div>
-                        <h1 class="text-2xl font-bold">Selamat datang, {{ Auth::user()->name }}</h1>
-                        <p class="text-sm opacity-90">Selamat datang kembali. Pilih fitur di bawah sesuai kebutuhanmu <i
-                                class="ri-emotion-happy-line"></i></p>
-                    </div>
-                </div>
+            <div
+               class="mx-auto max-w-6xl px-6 py-6 bg-blue-500 rounded-2xl text-white">
+                <h2 class="text-3xl font-bold">Selamat datang, {{ auth()->user()->name }}</h2>
+                <p class="mt-1 text-sm opacity-90">
+                    Pilih fitur di bawah sesuai kebutuhanmu
+                </p>
             </div>
 
             {{-- Menu Fitur --}}
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {{-- Fitur Admin --}}
-                <a href="{{ route('admin.jadwal_kerja.index') }}"
+                <a href="{{ route('admin.dashboard.index') }}"
                     class="group block bg-white border border-gray-200 rounded-2xl shadow hover:shadow-xl p-6 transition transform hover:-translate-y-1 hover:bg-blue-500 hover:border-blue-600">
 
                     <div class="flex items-center space-x-4">
                         <div class="p-4 bg-blue-100 rounded-full transition duration-300 group-hover:bg-blue-500">
                             <div class="text-4xl text-blue-600 text-center group-hover:text-white">
-                                <i class="ri-user-settings-line"></i>
+                               <i class="ri-user-3-line"></i>
                             </div>
                         </div>
                         <div>
@@ -40,8 +38,6 @@
                         </div>
                     </div>
                 </a>
-
-
                 {{-- Fitur Guru --}}
                 <a href="{{ route('guru.dashboard.index') }}"
                     class="group block bg-white border border-blue-200 rounded-2xl shadow hover:shadow-xl p-6 transition transform hover:-translate-y-1 hover:bg-blue-500 hover:border-blue-600">
@@ -61,11 +57,8 @@
                         </div>
                     </div>
                 </a>
-
-
-
                 {{-- Fitur Pegawai --}}
-                <a href="{{ route('pegawai.jadwal.index') }}"
+                <a href="{{ route('pegawai.dashboard') }}"
                     class="group block bg-white border border-blue-200 rounded-2xl shadow hover:shadow-xl p-6 transition transform hover:-translate-y-1 hover:bg-blue-500 hover:border-blue-600">
 
                     <div class="flex items-center space-x-4">
