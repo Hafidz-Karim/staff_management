@@ -5,6 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pegawai Dashboard</title>
+    <style>
+        .smooth-shadow {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -39,11 +45,11 @@
 
         <!-- LOGO -->
         <div class="flex items-center gap-3 mb-10 mt-2">
-            <div class="w-10 h-10 bg-blue-600 dark:bg-blue-500 rounded-xl flex items-center justify-center">
-                <i class="ri-dashboard-line text-xl text-white"></i>
+            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
+                <i class="ri-book-open-line text-xl text-white"></i>
             </div>
             <span class="text-xl font-bold text-gray-800 dark:text-gray-200">
-                Pegawai Dashboard
+                Management staff
             </span>
         </div>
 
@@ -56,6 +62,13 @@
                 <i class="ri-home-4-line text-xl"></i>
                 Dashboard
             </a>
+            <a href="{{ route('absensipegawai.index') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl
+           {{ request()->routeIs('absensipegawai.*') ? 'bg-blue-100 dark:bg-blue-800' : '' }}
+           text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
+                <i class="ri-calendar-check-line text-xl"></i>
+                Absensi Harian
+            </a>
 
             <a href="{{ route('pegawai.jadwal.index') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded-xl
@@ -65,12 +78,19 @@
                 Jadwal Kerja
             </a>
 
-            <a href="{{ route('pegawai.profile') }}"
+            <a href="{{ route('izin.create') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded-xl
-                   {{ request()->routeIs('admin.absensi.*') ? 'bg-blue-200 dark:bg-blue-800' : '' }}
-                   text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
-                <i class="ri-user-3-line text-xl"></i>
-                Profil
+                     {{ request()->routeIs('guru.absensi.*') ? 'bg-blue-100 dark:bg-blue-800' : '' }}
+                       text-gray-700 dark:text-white hover:bg-blue-100 dark:hover:bg-blue-800 transition">
+                <i class="ri-table-line"></i>
+                Ajukan Izin
+            </a>
+            <a href="{{ route('izin.index') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl
+                     {{ request()->routeIs('guru.absensi.*') ? 'bg-blue-100 dark:bg-blue-800' : '' }}
+                       text-gray-700 dark:text-white hover:bg-blue-100 dark:hover:bg-blue-800 transition">
+                <i class="ri-list-ordered-2"></i>
+                lihat list Izin
             </a>
             <a href="{{ route('dashboard') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded-xl
@@ -120,6 +140,7 @@
         </main>
 
     </div>
+    <x-footer />
 
 </body>
 

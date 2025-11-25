@@ -85,7 +85,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     Route::get('/absensi/export-pdf', [AdminAbsensiPegawaiController::class, 'exportPDF'])->name('absensi.export-pdf');
 
     // Izin — Admin
-    Route::get('/izin', [IzinAdminController::class, 'index'])->name('izin.index');
+    Route::get('/izin', [IzinAdminController::class, 'index'])->name('izin.index'); // admin.izin.inde
     Route::post('/izin/{id}/update-status', [IzinAdminController::class, 'updateStatus'])->name('izin.update-status');
 });
 
@@ -95,9 +95,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
 // ========================================
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/izin', [IzinController::class, 'index'])->name('izin.index');       // riwayat
+    Route::get('/izin', [IzinController::class, 'index'])->name('izin.index');      // riwayat
     Route::get('/izin/create', [IzinController::class, 'create'])->name('izin.create');
     Route::post('/izin/store', [IzinController::class, 'store'])->name('izin.store');
+    Route::get('/izin/{idIzin}', [IzinController::class, 'showSuratBukti'])->name('izin.showSuratBukti');      // riwayat
 });
 
 

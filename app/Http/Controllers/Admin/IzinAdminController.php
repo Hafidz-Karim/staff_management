@@ -21,19 +21,24 @@ class IzinAdminController extends Controller
 
     // VERIFIKASI IZIN
     public function updateStatus(Request $request, $id)
-    {
-        $request->validate([
-            'status' => 'required|in:disetujui,ditolak', // sesuaikan ENUM di DB
-            'catatan_admin' => 'nullable|string',
-        ]);
+{
+    $request->validate([
+        'status' => 'required|in:disetujui,ditolak',
+        'catatan_admin' => 'nullable|string',
+    ]);
 
-        $izin = Izin::findOrFail($id);
+    $izin = Izin::findOrFail($id);
 
+    try {
         $izin->update([
             'status' => $request->status,
             'catatan_admin' => $request->catatan_admin,
         ]);
 
         return redirect()->back()->with('success', 'Status izin berhasil diperbarui.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Terjadi kesalahan saat memperbarui status.');
     }
+}
+
 }

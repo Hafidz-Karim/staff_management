@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('pegawai.layout')
 
 @section('content')
 <div class="max-w-5xl mx-auto mt-10">
@@ -34,7 +34,7 @@
                 <td class="border px-4 py-2">{{ $item->alasan }}</td>
                 <td class="border px-4 py-2">
                     @if($item->bukti)
-                        <a href="{{ asset('storage/'.$item->bukti) }}" target="_blank" class="text-blue-600 underline">Lihat Bukti</a>
+                        <a href="{{route('izin.showSuratBukti', $item->id)}}" target="_blank" class="text-blue-600 underline">Lihat Bukti</a>
                     @else
                         -
                     @endif

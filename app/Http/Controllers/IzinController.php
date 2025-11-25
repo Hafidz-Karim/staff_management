@@ -54,4 +54,9 @@ class IzinController extends Controller
 
         return view('izin.index', compact('izins')); // nama variabel sama dengan Blade
     }
+
+    public function showSuratBukti($idIzin) {
+        $izin = Izin::find($idIzin);
+        return view('izin.showimage', compact('izin'));
+    }
 }

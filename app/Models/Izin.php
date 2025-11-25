@@ -25,6 +25,6 @@ class Izin extends Model
     // Relasi ke User (pegawai)
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 }
