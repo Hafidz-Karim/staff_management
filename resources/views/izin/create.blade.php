@@ -27,8 +27,8 @@
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">-- Pilih Jenis Izin --</option>
                     <option value="Sakit">Sakit</option>
-                    <option value="Izin Pribadi">Izin Pribadi</option>
-                    <option value="Acara Keluarga">Acara Keluarga</option>
+                    <option value="Cuti">Cuti</option>
+                    <option value="Lain Lain">Lain Lain</option>
                 </select>
                 @error('jenis_izin')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
