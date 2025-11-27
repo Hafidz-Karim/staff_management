@@ -14,7 +14,7 @@ class IzinController extends Controller
         return view('izin.create');
     }
 
-    // SIMPAN PENGAJUAN
+    // SIMPAN PENGAJUAN IZIN
     public function store(Request $request)
     {
         $request->validate([
@@ -22,40 +22,48 @@ class IzinController extends Controller
             'tanggal_mulai' => 'required|date',
             'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
             'alasan' => 'required|min:5',
-            'bukti' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
+            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
 
-        $path = null;
+        // Tentukan jenis izin final
+        $finalJenisIzin = $request->jenis_izin == 'Lain Lain'
+            ? $request->jenis_izin_lainnya
+            : $request->jenis_izin;
 
+        // Upload file bukti bila ada
+        $fileName = null;
         if ($request->hasFile('bukti')) {
-            $path = $request->file('bukti')->store('bukti_izin', 'public');
+            $fileName = time().'_'.$request->bukti->getClientOriginalName();
+            $request->bukti->move(public_path('uploads/izin'), $fileName);
         }
 
+        // Simpan data izin (DISAMAKAN DENGAN DATABASE)
         Izin::create([
             'user_id' => Auth::id(),
-            'jenis_izin' => $request->jenis_izin,
+            'jenis_izin' => $finalJenisIzin,
             'tanggal_mulai' => $request->tanggal_mulai,
             'tanggal_selesai' => $request->tanggal_selesai,
-            'alasan' => $request->alasan,
-            'bukti' => $path,
-            'status' => 'pending', // sesuai ENUM di database
+            'alasan' => $request->alasan,     // ← sesuai database
+            'bukti' => $fileName,             // ← sesuai database
+            'status' => 'pending',
         ]);
 
         return redirect()->route('izin.index')->with('success', 'Pengajuan izin berhasil dikirim.');
     }
 
-    // RIWAYAT IZIN USER
+    // RIWAYAT IZIN
     public function index()
     {
-        // Ambil semua pengajuan user saat ini
         $izins = Izin::where('user_id', Auth::id())
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('izin.index', compact('izins')); // nama variabel sama dengan Blade
+        return view('izin.index', compact('izins'));
     }
 
-    public function showSuratBukti($idIzin) {
+    // TAMPILKAN FILE
+    public function showSuratBukti($idIzin)
+    {
         $izin = Izin::find($idIzin);
         return view('izin.showimage', compact('izin'));
     }

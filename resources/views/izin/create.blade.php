@@ -23,7 +23,7 @@
             {{-- JENIS IZIN --}}
             <div>
                 <label class="block font-semibold mb-2 text-gray-700 dark:text-gray-200">Jenis Izin</label>
-                <select name="jenis_izin"
+                <select name="jenis_izin" id="jenis_izin"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">-- Pilih Jenis Izin --</option>
                     <option value="Sakit">Sakit</option>
@@ -31,6 +31,19 @@
                     <option value="Lain Lain">Lain Lain</option>
                 </select>
                 @error('jenis_izin')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- INPUT TAMBAHAN UNTUK JENIS IZIN LAINNYA --}}
+            <div id="input_lainnya" class="hidden">
+                <label class="block font-semibold mb-2 text-gray-700 dark:text-gray-200">
+                    Masukkan Jenis Izin Lainnya
+                </label>
+                <input type="text" name="jenis_izin_lainnya"
+                       class="w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                       placeholder="Contoh: Izin Acara Keluarga, Izin Pernikahan">
+                @error('jenis_izin_lainnya')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
@@ -59,7 +72,8 @@
             <div>
                 <label class="block font-semibold mb-2 text-gray-700 dark:text-gray-200">Alasan</label>
                 <textarea name="alasan" rows="4"
-                          class="w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                          class="w-full rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          placeholder="Tulis alasan izin kamu..."></textarea>
                 @error('alasan')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
@@ -67,7 +81,7 @@
 
             {{-- BUKTI --}}
             <div>
-                <label class="block font-semibold mb-2 text-gray-700 dark:text-gray-200">Upload Bukti (Optional)</label>
+                <label class="block font-semibold mb-2 text-gray-700 dark:text-gray-200">Upload Bukti (Opsional)</label>
                 <input type="file" name="bukti"
                        class="w-full text-gray-700 dark:text-gray-200 dark:bg-gray-700 dark:border-gray-600 px-3 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-500">
                 @error('bukti')
@@ -86,4 +100,19 @@
         </form>
     </div>
 </div>
+
+{{-- SCRIPT UNTUK MENAMPILKAN INPUT LAINNYA --}}
+<script>
+    const jenisIzin = document.getElementById('jenis_izin');
+    const inputLainnya = document.getElementById('input_lainnya');
+
+    jenisIzin.addEventListener('change', function() {
+        if (this.value === "Lain Lain") {
+            inputLainnya.classList.remove('hidden');
+        } else {
+            inputLainnya.classList.add('hidden');
+        }
+    });
+</script>
+
 @endsection
