@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\JadwalKerjaController as AdminJadwalKerjaControll
 use App\Http\Controllers\Admin\AdminAbsensiPegawaiController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\IzinAdminController;
+use App\Http\Controllers\Admin\PegawaiController;
 
 // PEGAWAI
 use App\Http\Controllers\Pegawai\DashboardController as PegawaiDashboardController;
@@ -87,19 +88,47 @@ Route::prefix('admin')->name('admin.')->middleware(['auth'])->group(function () 
     // Izin — Admin
     Route::get('/izin', [IzinAdminController::class, 'index'])->name('izin.index'); // admin.izin.inde
     Route::post('/izin/{id}/update-status', [IzinAdminController::class, 'updateStatus'])->name('izin.update-status');
+
+
+    //
+    Route::resource('pegawai', PegawaiController::class);
+
+
+    
+    // Tambahan untuk aktif / nonaktif
+    Route::put('/pegawai/{id}/nonaktifkan', [PegawaiController::class, 'nonaktifkan'])
+        ->name('pegawai.nonaktifkan');
+
+    Route::put('/pegawai/{id}/aktifkan', [PegawaiController::class, 'aktifkan'])
+        ->name('pegawai.aktifkan');
 });
 
 
 // ========================================
 // IZIN — USER (PEGAWAI DAN GURU BOLEH MENGAJUKAN)
 // ========================================
+// ========================================
+// IZIN — USER (PEGAWAI DAN GURU BOLEH MENGAJUKAN)
+// ========================================
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/izin', [IzinController::class, 'index'])->name('izin.index');      // riwayat
+    Route::get('/izin', [IzinController::class, 'index'])->name('izin.index'); // list
     Route::get('/izin/create', [IzinController::class, 'create'])->name('izin.create');
     Route::post('/izin/store', [IzinController::class, 'store'])->name('izin.store');
-    Route::get('/izin/{idIzin}', [IzinController::class, 'showSuratBukti'])->name('izin.showSuratBukti');      // riwayat
+
+    // --- Tambahkan di sini ---
+    Route::get('/izin/{id}/edit', [IzinController::class, 'edit'])->name('izin.edit');
+    Route::put('/izin/{id}', [IzinController::class, 'update'])->name('izin.update');
+    // --------------------------
+
+    Route::get('/izin/{idIzin}', [IzinController::class, 'showSuratBukti'])
+        ->name('izin.showSuratBukti'); // show bukti
+
+    // Delete
+    Route::delete('/izin/{id}/delete', [IzinController::class, 'destroy'])
+        ->name('izin.destroy');
 });
+
 
 
 // ========================================

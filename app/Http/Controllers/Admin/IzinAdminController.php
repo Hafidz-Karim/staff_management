@@ -9,15 +9,40 @@ use Illuminate\Http\Request;
 class IzinAdminController extends Controller
 {
     // TAMPILKAN SEMUA PENGAJUAN IZIN
-    public function index()
-    {
-        // Ambil semua pengajuan beserta data user
-        $izins = Izin::with('user')
-            ->orderBy('created_at', 'desc')
-            ->get();
+   public function index(Request $request)
+{
+    $query = Izin::with('user');
 
-        return view('admin.izin.index', compact('izins')); // nama variabel sesuai Blade
+    // Filter Nama Pegawai
+    if ($request->filled('nama')) {
+        $query->whereHas('user', function ($q) use ($request) {
+            $q->where('name', 'LIKE', '%' . $request->nama . '%');
+        });
     }
+
+    // Filter Jenis Izin
+    if ($request->filled('jenis_izin')) {
+        $query->where('jenis_izin', $request->jenis_izin);
+    }
+
+    // Filter Status
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    // Filter tanggal izin (tanggal_mulai)
+    if ($request->filled('dari') && $request->filled('sampai')) {
+        $query->whereBetween('tanggal_mulai', [
+            $request->dari,
+            $request->sampai
+        ]);
+    }
+
+    $izin = $query->latest()->paginate(10);
+
+    return view('admin.izin.index', compact('izin'));
+}
+
 
     // VERIFIKASI IZIN
     public function updateStatus(Request $request, $id)

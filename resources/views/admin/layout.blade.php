@@ -5,9 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') | Admin Dashboard</title>
-     <style>
+    <style>
         .smooth-shadow {
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-head {
+            @apply px-4 py-3 text-left text-sm font-bold text-gray-700 border-b-2 border-gray-300;
+        }
+
+        .table-cell {
+            @apply px-4 py-3 text-gray-800 text-sm;
+        }
+
+        .btn-green {
+            @apply bg-green-500 text-white px-2 py-1 rounded;
+        }
+
+        .btn-red {
+            @apply bg-red-500 text-white px-2 py-1 rounded;
         }
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -45,9 +61,9 @@
 
         <!-- LOGO ADMIN -->
         <div class="flex items-center gap-3 mb-10 mt-2">
-             <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
-                    <i class="ri-book-open-line text-xl text-white"></i>
-                </div>
+            <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
+                <i class="ri-book-open-line text-xl text-white"></i>
+            </div>
             <span class="text-xl font-bold text-gray-800 dark:text-gray-200">
                 Management staff
             </span>
@@ -63,22 +79,6 @@
                 <i class="ri-home-4-line text-xl"></i>
                 Dashboard
             </a>
-            <a href="{{ route('absensipegawai.index') }}"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl
-           {{ request()->routeIs('absensipegawai.*') ? 'bg-blue-100 dark:bg-blue-800' : '' }}
-           text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
-                <i class="ri-calendar-check-line text-xl"></i>
-                Absensi Harian
-            </a>
-
-            <a href="{{ route('admin.jadwal_kerja.index') }}"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl
-                       {{ request()->routeIs('admin.jadwal.index') ? 'bg-gray-200 dark:bg-gray-800' : '' }}
-                       text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
-                <i class="ri-calendar-check-line text-xl"></i>
-                Jadwal Kerja
-            </a>
-
             <!-- Absensi Pegawai -->
             <a href="{{ route('admin.absensi.index') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded-xl
@@ -87,7 +87,15 @@
                 <i class="ri-file-list-3-line text-xl"></i>
                 Data Absensi
             </a>
-            {{--  --}}
+            {{-- Data list pegawai --}}
+
+            <a href="{{ route('admin.pegawai.index') }}"
+                class="flex items-center gap-3 px-4 py-3 rounded-xl
+                   {{ request()->routeIs('admin.absensi.*') ? 'bg-blue-200 dark:bg-blue-800' : '' }}
+                   text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
+                <i class="ri-file-list-3-line text-xl"></i>Data Pegawai</a>
+
+            {{-- Data list izin pegawai --}}
             <a href="{{ route('admin.izin.index') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded-xl
                    {{ request()->routeIs('admin.absensi.*') ? 'bg-blue-200 dark:bg-blue-800' : '' }}
@@ -148,7 +156,7 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <x-sweetalert />
-     <x-footer />
+    <x-footer />
 </body>
 
 </html>

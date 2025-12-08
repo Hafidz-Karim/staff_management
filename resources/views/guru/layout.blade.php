@@ -69,21 +69,6 @@
                     <i class="ri-calendar-check-line text-xl"></i>
                     Absensi Harian
                 </a>
-                <a href="{{ route('guru.jadwal.index') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-xl
-                     {{ request()->routeIs('guru.jadwal.*') ? 'bg-blue-100 dark:bg-blue-800' : '' }}
-                       text-gray-700 dark:text-white hover:bg-blue-100 dark:hover:bg-blue-800 transition">
-                    <i class="ri-calendar-check-line text-xl"></i>
-                    Jadwal Mengajar
-                </a>
-
-                <a href="{{ route('guru.laporan.index') }}"
-                    class="flex items-center gap-3 px-4 py-3 rounded-xl
-                     {{ request()->routeIs('guru.laporan.*') ? 'bg-blue-100 dark:bg-blue-800' : '' }}
-                       text-gray-700 dark:text-white hover:bg-blue-100 dark:hover:bg-blue-800 transition">
-                    <i class="ri-file-list-2-line text-xl"></i>
-                    Laporan Harian
-                </a>
 
                 <a href="{{ route('izin.create') }}"
                     class="flex items-center gap-3 px-4 py-3 rounded-xl

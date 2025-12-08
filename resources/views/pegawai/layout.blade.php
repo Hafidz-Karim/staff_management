@@ -70,14 +70,6 @@
                 Absensi Harian
             </a>
 
-            <a href="{{ route('pegawai.jadwal.index') }}"
-                class="flex items-center gap-3 px-4 py-3 rounded-xl
-                   {{ request()->routeIs('admin.absensi.*') ? 'bg-blue-200 dark:bg-blue-800' : '' }}
-                   text-gray-700 dark:text-gray-300 hover:bg-blue-100 dark:hover:bg-blue-700 transition">
-                <i class="ri-calendar-check-line text-xl"></i>
-                Jadwal Kerja
-            </a>
-
             <a href="{{ route('izin.create') }}"
                 class="flex items-center gap-3 px-4 py-3 rounded-xl
                      {{ request()->routeIs('guru.absensi.*') ? 'bg-blue-100 dark:bg-blue-800' : '' }}
